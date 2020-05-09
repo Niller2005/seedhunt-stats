@@ -1,0 +1,10 @@
+version: '3.4'
+
+services:
+  stats:
+    image: stats
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 9988:8080
