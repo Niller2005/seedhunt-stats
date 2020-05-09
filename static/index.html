@@ -1,170 +1,182 @@
-<head>
-  <script src="https://cdn.jsdelivr.net/npm/moment@2.24.0/min/moment.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-streaming@1.8.0"></script>
-  <link rel="stylesheet" type="text/css" href="style.css">
-</head>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.24.0/min/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-streaming@1.8.0"></script>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <title>Seedhunt Stats</title>
+  </head>
+  <body>
+    <div class="spsChart-container">
+      <canvas id="spsChart"></canvas>
+    </div>
+    <div class="chart-container">
+      <canvas id="totalviableChart"></canvas>
+    </div>
+    <div class="chart-container">
+      <canvas id="totalscannedChart"></canvas>
+    </div>
 
-<body>
-  <div class="spsChart-container">
-    <canvas id="spsChart"></canvas>
-  </div>
-  <div class="chart-container">
-    <canvas id="totalviableChart"></canvas>
-  </div>
-  <div class="chart-container">
-    <canvas id="totalscannedChart"></canvas>
-  </div>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-app.js"></script>
 
-  <!-- The core Firebase JS SDK is always required and must be listed first -->
-  <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-app.js"></script>
-
-  <!-- TODO: Add SDKs for Firebase products that you want to use
+    <!-- TODO: Add SDKs for Firebase products that you want to use
        https://firebase.google.com/docs/web/setup#available-libraries -->
-  <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-analytics.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-database.js"></script>
 
-  <script>
-    // Your web app's Firebase configuration
-    var firebaseConfig = {
-      apiKey: "AIzaSyAtQCYeu0458BV6lZrWYcOaAh81lzX6UQg",
-      authDomain: "seedhunt-stats.firebaseapp.com",
-      databaseURL: "https://seedhunt-stats.firebaseio.com",
-      projectId: "seedhunt-stats",
-      storageBucket: "seedhunt-stats.appspot.com",
-      messagingSenderId: "277480645347",
-      appId: "1:277480645347:web:7f046f6ad7cda1cc209bd6",
-      measurementId: "G-396J912S0K"
-    };
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    firebase.analytics();
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: 'AIzaSyAtQCYeu0458BV6lZrWYcOaAh81lzX6UQg',
+        authDomain: 'seedhunt-stats.firebaseapp.com',
+        databaseURL: 'https://seedhunt-stats.firebaseio.com',
+        projectId: 'seedhunt-stats',
+        storageBucket: 'seedhunt-stats.appspot.com',
+        messagingSenderId: '277480645347',
+        appId: '1:277480645347:web:7f046f6ad7cda1cc209bd6',
+        measurementId: 'G-396J912S0K',
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      firebase.analytics();
 
-    var database = firebase.database();
-    var spsRef = database.ref('sps');
-    var totalviableRef = database.ref('totalviable');
-    var totalscannedRef = database.ref('totalscanned');
+      var database = firebase.database();
+      var spsRef = database.ref('sps');
+      var totalviableRef = database.ref('totalviable');
+      var totalscannedRef = database.ref('totalscanned');
 
+      var config = {
+        type: 'line',
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            xAxes: [
+              {
+                type: 'realtime',
+                realtime: {
+                  duration: 3600000,
+                  delay: 2000,
+                },
+              },
+            ],
+            yAxes: [
+              {
+                ticks: {
+                  // Return an empty string to draw the tick line but hide the tick label
+                  // Return `null` or `undefined` to hide the tick line entirely
+                  userCallback: function (value, index, values) {
+                    // Convert the number to a string and splite the string every 3 charaters from the end
+                    value = value.toString();
+                    value = value.split(/(?=(?:...)*$)/);
 
-    var config = {
-      type: 'line',
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          xAxes: [{
-            type: 'realtime',
-            realtime: {
-              duration: 3600000,
-              delay: 2000,
-
-            }
-          }],
-          yAxes: [{
-            ticks: {
-
-              // Return an empty string to draw the tick line but hide the tick label
-              // Return `null` or `undefined` to hide the tick line entirely
-              userCallback: function (value, index, values) {
-                // Convert the number to a string and splite the string every 3 charaters from the end
-                value = value.toString();
-                value = value.split(/(?=(?:...)*$)/);
-
-                // Convert the array to a string and format the output
-                value = value.join(',');
-                return value;
-              }
-            }
-          }]
+                    // Convert the array to a string and format the output
+                    value = value.join(',');
+                    return value;
+                  },
+                },
+              },
+            ],
+          },
+          tooltips: {
+            mode: 'nearest',
+            intersect: false,
+          },
+          hover: {
+            mode: 'nearest',
+            intersect: false,
+          },
         },
-        tooltips: {
-          mode: 'nearest',
-          intersect: false,
-        },
-        hover: {
-          mode: 'nearest',
-          intersect: false
-        }
-      }
-    };
+      };
 
-    window.onload = function () {
-      var spsCtx = document.getElementById('spsChart').getContext('2d');
-      var totalviableCtx = document.getElementById('totalviableChart').getContext('2d');
-      var totalscannedCtx = document.getElementById('totalscannedChart').getContext('2d');
-      window.spsChart = new Chart(spsCtx, {
-        ...config,
-        data: {
-          datasets: [{
-            label: 'Seeds per second',
-            backgroundColor: 'rgba(255, 99, 132, 0.5)',
-            borderColor: 'rgb(255, 99, 132)',
-            fill: false,
-            data: []
-          }]
-        }
-      });
-      window.totalviableChart = new Chart(totalviableCtx, {
-        ...config,
-        data: {
-          datasets: [{
-            label: 'Total Viable Seeds',
-            backgroundColor: 'rgba(255, 99, 132, 0.5)',
-            borderColor: 'rgb(255, 99, 132)',
-            fill: false,
-            data: []
-          }]
-        }
-      });
-      window.totalscannedChart = new Chart(totalscannedCtx, {
-        ...config,
-        data: {
-          datasets: [{
-            label: 'Total Scanned Seeds',
-            backgroundColor: 'rgba(255, 99, 132, 0.5)',
-            borderColor: 'rgb(255, 99, 132)',
-            fill: false,
-            data: []
-          }]
-        }
-      });
-    };
+      window.onload = function () {
+        var spsCtx = document.getElementById('spsChart').getContext('2d');
+        var totalviableCtx = document.getElementById('totalviableChart').getContext('2d');
+        var totalscannedCtx = document.getElementById('totalscannedChart').getContext('2d');
+        window.spsChart = new Chart(spsCtx, {
+          ...config,
+          data: {
+            datasets: [
+              {
+                label: 'Seeds per second',
+                backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                borderColor: 'rgb(255, 99, 132)',
+                fill: false,
+                data: [],
+              },
+            ],
+          },
+        });
+        window.totalviableChart = new Chart(totalviableCtx, {
+          ...config,
+          data: {
+            datasets: [
+              {
+                label: 'Total Viable Seeds',
+                backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                borderColor: 'rgb(255, 99, 132)',
+                fill: false,
+                data: [],
+              },
+            ],
+          },
+        });
+        window.totalscannedChart = new Chart(totalscannedCtx, {
+          ...config,
+          data: {
+            datasets: [
+              {
+                label: 'Total Scanned Seeds',
+                backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                borderColor: 'rgb(255, 99, 132)',
+                fill: false,
+                data: [],
+              },
+            ],
+          },
+        });
+      };
 
-    spsRef
-      .orderByChild('time')
-      .limitToLast(60)
-      .on('child_added', (snapshot) => {
-        window.spsChart.config.data.datasets[0].data.push({
-          x: snapshot.val().time,
-          y: snapshot.val().value
+      spsRef
+        .orderByChild('time')
+        .limitToLast(60)
+        .on('child_added', (snapshot) => {
+          window.spsChart.config.data.datasets[0].data.push({
+            x: snapshot.val().time,
+            y: snapshot.val().value,
+          });
+          window.spsChart.update({
+            preservation: true,
+          });
         });
-        window.spsChart.update({
-          preservation: true
+      totalviableRef
+        .orderByChild('time')
+        .limitToLast(60)
+        .on('child_added', (snapshot) => {
+          window.totalviableChart.config.data.datasets[0].data.push({
+            x: snapshot.val().time,
+            y: snapshot.val().value,
+          });
+          window.totalviableChart.update({
+            preservation: true,
+          });
         });
-      });
-    totalviableRef
-      .orderByChild('time')
-      .limitToLast(60)
-      .on('child_added', (snapshot) => {
-        window.totalviableChart.config.data.datasets[0].data.push({
-          x: snapshot.val().time,
-          y: snapshot.val().value
+      totalscannedRef
+        .orderByChild('time')
+        .limitToLast(60)
+        .on('child_added', (snapshot) => {
+          window.totalscannedChart.config.data.datasets[0].data.push({
+            x: snapshot.val().time,
+            y: snapshot.val().value,
+          });
+          window.totalscannedChart.update({
+            preservation: true,
+          });
         });
-        window.totalviableChart.update({
-          preservation: true
-        });
-      });
-    totalscannedRef
-      .orderByChild('time')
-      .limitToLast(60)
-      .on('child_added', (snapshot) => {
-        window.totalscannedChart.config.data.datasets[0].data.push({
-          x: snapshot.val().time,
-          y: snapshot.val().value
-        });
-        window.totalscannedChart.update({
-          preservation: true
-        });
-      });
-  </script>
-</body>
+    </script>
+  </body>
+</html>

@@ -1,6 +1,7 @@
 const firebase = require('firebase-admin');
 const axios = require('axios').default;
-const connect = require('connect');
+const finalhandler = require('finalhandler');
+const http = require('http');
 const serveStatic = require('serve-static');
 
 const serviceAccount = require('./sa/seedhunt-stats-firebase-adminsdk-sva6e-7313ad736e.json');
@@ -41,6 +42,9 @@ setInterval(() => {
   });
 }, 60000);
 
-connect()
-  .use(serveStatic(__dirname + '/static'))
-  .listen(8080, () => console.log('Server running on 8080...'));
+const serve = serveStatic(__dirname + '/static');
+
+const server = http.createServer(function onRequest(req, res) {
+  serve(req, res, finalhandler(req, res));
+});
+server.listen(8080);
