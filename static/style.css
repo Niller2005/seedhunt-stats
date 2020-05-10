@@ -11,5 +11,9 @@ body {
 
 canvas {
   width: 100% !important;
-  height: 32vh !important;
+  height: 25vh !important;
+}
+
+.ui.progress {
+  margin: 0 !important;
 }

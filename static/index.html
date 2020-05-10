@@ -6,8 +6,15 @@
     <script src="https://cdn.jsdelivr.net/npm/moment@2.24.0/min/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-streaming@1.8.0"></script>
-    <link rel="stylesheet" type="text/css" href="style.css" />
     <title>Seedhunt Stats</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" crossorigin="anonymous"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="style.css" />
   </head>
   <body>
     <div class="spsChart-container">
@@ -19,6 +26,45 @@
     <div class="chart-container">
       <canvas id="totalscannedChart"></canvas>
     </div>
+    <table class="ui compact table">
+      <thead>
+        <tr>
+          <th class="three wide">Goal</th>
+          <th class="three wide">Remaining</th>
+          <th class="three wide">ETA</th>
+          <th>Progress</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>10,000,000,000,000</td>
+          <td id="ttrem">10000000000000</td>
+          <td id="tteta">&infin;</td>
+          <td>
+            <div class="ui indicating progress" data-percent="0" id="ttpro">
+              <div class="bar">
+                <div class="progress"></div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>100,000,000,000,000</td>
+          <td id="htrem">100000000000000</td>
+          <td id="hteta">&infin;</td>
+          <td>
+            <div class="ui indicating progress" data-percent="0" id="htpro">
+              <div class="bar">
+                <div class="progress"></div>
+              </div>
+            </div>
+          </td>
+        </tr>
+
+        <tr></tr>
+        <tr></tr>
+      </tbody>
+    </table>
 
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-app.js"></script>
@@ -141,10 +187,86 @@
         });
       };
 
+      stats = {
+        spsInternal: 0,
+        viableInternal: 0,
+        scannedInternal: 0,
+        spsListener: function (val) {},
+        viableListener: function (val) {},
+        scannedListener: function (val) {},
+        set sps(val) {
+          this.spsInternal = val;
+          this.spsListener(val);
+        },
+        set viable(val) {
+          this.viableInternal = val;
+          this.viableListener(val);
+        },
+        set scanned(val) {
+          this.scannedInternal = val;
+          this.scannedListener(val);
+        },
+        get sps() {
+          return this.spsInternal;
+        },
+        get viable() {
+          return this.viableInternal;
+        },
+        get scanned() {
+          return this.scannedInternal;
+        },
+        rSpsListener: function (listener) {
+          this.spsListener = listener;
+        },
+        rViableListener: function (listener) {
+          this.viableListener = listener;
+        },
+        rScannedListener: function (listener) {
+          this.scannedListener = listener;
+        },
+      };
+
+      function eta(iSeconds) {
+        etaRet = {};
+        seconds = Number(iSeconds);
+        var d = Math.floor(seconds / (3600 * 24));
+        var h = Math.floor((seconds % (3600 * 24)) / 3600);
+        var m = Math.floor((seconds % 3600) / 60);
+        var s = Math.floor(seconds % 60);
+
+        etaRet.d = d > 0 ? d + (d == 1 ? 'd ' : 'd ') : '';
+        etaRet.h = h > 0 ? h + (h == 1 ? 'h ' : 'h ') : '';
+        etaRet.m = m > 0 ? m + (m == 1 ? 'm ' : 'm ') : '';
+        etaRet.s = s > 0 ? s + (s == 1 ? 's ' : 's ') : '';
+
+        return etaRet;
+      }
+
+      stats.rSpsListener(function (val) {
+        htrem = eta(Math.floor((100000000000000 - stats.scanned) / val));
+        ttrem = eta(Math.floor((10000000000000 - stats.scanned) / val));
+
+        document.getElementById('hteta').innerHTML = htrem.d + htrem.h + htrem.m;
+        document.getElementById('tteta').innerHTML = ttrem.d + ttrem.h + ttrem.m;
+      });
+
+      stats.rScannedListener(function (val) {
+        $('#ttpro').progress({ total: 10000000000000, value: val });
+        $('#htpro').progress({ total: 100000000000000, value: val });
+
+        document.getElementById('htrem').innerHTML = (100000000000000 - val).toLocaleString();
+        document.getElementById('ttrem').innerHTML = (10000000000000 - val).toLocaleString();
+      });
+
+      $(document).ready(function () {
+        $('#example1').progress();
+      });
+
       spsRef
         .orderByChild('time')
         .limitToLast(60)
         .on('child_added', (snapshot) => {
+          stats.sps = snapshot.val().value;
           window.spsChart.config.data.datasets[0].data.push({
             x: snapshot.val().time,
             y: snapshot.val().value,
@@ -157,6 +279,7 @@
         .orderByChild('time')
         .limitToLast(60)
         .on('child_added', (snapshot) => {
+          stats.viable = snapshot.val().value;
           window.totalviableChart.config.data.datasets[0].data.push({
             x: snapshot.val().time,
             y: snapshot.val().value,
@@ -169,6 +292,7 @@
         .orderByChild('time')
         .limitToLast(60)
         .on('child_added', (snapshot) => {
+          stats.scanned = snapshot.val().value;
           window.totalscannedChart.config.data.datasets[0].data.push({
             x: snapshot.val().time,
             y: snapshot.val().value,
