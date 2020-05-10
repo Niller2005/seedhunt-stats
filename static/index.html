@@ -119,6 +119,8 @@
   <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-database.js"></script>
 
   <script>
+    /*global firebase Chart*/
+
     // Your web app's Firebase configuration
     var firebaseConfig = {
       apiKey: 'AIzaSyAtQCYeu0458BV6lZrWYcOaAh81lzX6UQg',
@@ -221,7 +223,7 @@
       });
     };
 
-    stats = {
+    const stats = {
       spsInternal: 0,
       viableInternal: 0,
       scannedInternal: 0,
@@ -261,8 +263,8 @@
     };
 
     function eta(iSeconds) {
-      etaRet = {};
-      seconds = Number(iSeconds);
+      const etaRet = {};
+      const seconds = Number(iSeconds);
       var d = Math.floor(seconds / (3600 * 24));
       var h = Math.floor((seconds % (3600 * 24)) / 3600);
       var m = Math.floor((seconds % 3600) / 60);
@@ -277,11 +279,11 @@
     }
 
     stats.rSpsListener(function (val) {
-      ttrem = eta(Math.floor((10000000000000 - stats.scanned) / val));
-      tftrem = eta(Math.floor((25000000000000 - stats.scanned) / val));
-      ftrem = eta(Math.floor((50000000000000 - stats.scanned) / val));
-      sftrem = eta(Math.floor((75000000000000 - stats.scanned) / val));
-      htrem = eta(Math.floor((100000000000000 - stats.scanned) / val));
+      const ttrem = eta(Math.floor((10000000000000 - stats.scanned) / val));
+      const tftrem = eta(Math.floor((25000000000000 - stats.scanned) / val));
+      const ftrem = eta(Math.floor((50000000000000 - stats.scanned) / val));
+      const sftrem = eta(Math.floor((75000000000000 - stats.scanned) / val));
+      const htrem = eta(Math.floor((100000000000000 - stats.scanned) / val));
 
       document.getElementById('tteta').innerHTML = ttrem.d + ttrem.h + ttrem.m;
       document.getElementById('tfteta').innerHTML = tftrem.d + tftrem.h + tftrem.m;
