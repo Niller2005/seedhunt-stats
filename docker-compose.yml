@@ -8,3 +8,18 @@ services:
       dockerfile: Dockerfile
     ports:
       - 9988:8080
+    labels:
+      traefik.enable: 'true'
+      traefik.frontend.auth.forward.address: ''
+      traefik.frontend.headers.SSLHost: 'niller.xyz'
+      traefik.frontend.headers.SSLRedirect: 'true'
+      traefik.frontend.headers.STSIncludeSubdomains: 'true'
+      traefik.frontend.headers.STSPreload: 'true'
+      traefik.frontend.headers.STSSeconds: '315360000'
+      traefik.frontend.headers.browserXSSFilter: 'true'
+      traefik.frontend.headers.contentTypeNosniff: 'true'
+      traefik.frontend.headers.customResponseHeaders: 'X-Robots-Tag:noindex,nofollow,nosnippet,noarchive,notranslate,noimageindex'
+      traefik.frontend.headers.forceSTSHeader: 'true'
+      traefik.frontend.redirect.entryPoint: 'https'
+      traefik.frontend.rule: 'Host:seedhunt-stats.niller.xyz'
+      traefik.port: '8080'
