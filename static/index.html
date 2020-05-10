@@ -45,6 +45,42 @@
           </td>
         </tr>
         <tr>
+          <td>25,000,000,000,000</td>
+          <td id="tftrem">25000000000000</td>
+          <td id="tfteta">&infin;</td>
+          <td>
+            <div class="ui indicating progress" data-percent="0" id="tftpro">
+              <div class="bar">
+                <div class="progress"></div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>50,000,000,000,000</td>
+          <td id="ftrem">50000000000000</td>
+          <td id="fteta">&infin;</td>
+          <td>
+            <div class="ui indicating progress" data-percent="0" id="ftpro">
+              <div class="bar">
+                <div class="progress"></div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>75,000,000,000,000</td>
+          <td id="sftrem">75000000000000</td>
+          <td id="sfteta">&infin;</td>
+          <td>
+            <div class="ui indicating progress" data-percent="0" id="sftpro">
+              <div class="bar">
+                <div class="progress"></div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
           <td>100,000,000,000,000</td>
           <td id="htrem">100000000000000</td>
           <td id="hteta">&infin;</td>
@@ -239,19 +275,31 @@
       }
 
       stats.rSpsListener(function (val) {
-        htrem = eta(Math.floor((100000000000000 - stats.scanned) / val));
         ttrem = eta(Math.floor((10000000000000 - stats.scanned) / val));
+        tftrem = eta(Math.floor((25000000000000 - stats.scanned) / val));
+        ftrem = eta(Math.floor((50000000000000 - stats.scanned) / val));
+        sftrem = eta(Math.floor((75000000000000 - stats.scanned) / val));
+        htrem = eta(Math.floor((100000000000000 - stats.scanned) / val));
 
-        document.getElementById('hteta').innerHTML = htrem.d + htrem.h + htrem.m;
         document.getElementById('tteta').innerHTML = ttrem.d + ttrem.h + ttrem.m;
+        document.getElementById('tfteta').innerHTML = tftrem.d + tftrem.h + tftrem.m;
+        document.getElementById('fteta').innerHTML = ftrem.d + ftrem.h + ftrem.m;
+        document.getElementById('sfteta').innerHTML = sftrem.d + sftrem.h + sftrem.m;
+        document.getElementById('hteta').innerHTML = htrem.d + htrem.h + htrem.m;
       });
 
       stats.rScannedListener(function (val) {
         $('#ttpro').progress({ total: 10000000000000, value: val });
+        $('#tftpro').progress({ total: 25000000000000, value: val });
+        $('#ftpro').progress({ total: 50000000000000, value: val });
+        $('#sftpro').progress({ total: 75000000000000, value: val });
         $('#htpro').progress({ total: 100000000000000, value: val });
 
-        document.getElementById('htrem').innerHTML = (100000000000000 - val).toLocaleString();
         document.getElementById('ttrem').innerHTML = (10000000000000 - val).toLocaleString();
+        document.getElementById('tftrem').innerHTML = (25000000000000 - val).toLocaleString();
+        document.getElementById('ftrem').innerHTML = (50000000000000 - val).toLocaleString();
+        document.getElementById('sftrem').innerHTML = (75000000000000 - val).toLocaleString();
+        document.getElementById('htrem').innerHTML = (100000000000000 - val).toLocaleString();
       });
 
       $(document).ready(function () {
