@@ -24,6 +24,13 @@
   <div class="chart-container">
     <canvas id="totalscannedChart"></canvas>
   </div>
+
+  <!-- <div class="three ui buttons">
+    <button class="ui button" value="21600000">6 hours</button>
+    <button class="ui button" value="10800000">3 hours</button>
+    <button class="ui button" value="3600000">1 hour</button>
+  </div> -->
+
   <table class="ui compact table">
     <thead>
       <tr>
@@ -141,20 +148,25 @@
     var totalviableRef = database.ref('totalviable');
     var totalscannedRef = database.ref('totalscanned');
 
+
+
     var config = {
       type: 'line',
       options: {
         responsive: true,
         maintainAspectRatio: false,
+
         scales: {
           xAxes: [{
             type: 'realtime',
             realtime: {
-              duration: 3600000,
+              duration: 21600000,
               delay: 62000,
             },
           }, ],
           yAxes: [{
+            pointRadius: 0,
+
             ticks: {
               // Return an empty string to draw the tick line but hide the tick label
               // Return `null` or `undefined` to hide the tick line entirely
@@ -193,6 +205,7 @@
             backgroundColor: 'rgba(255, 99, 132, 0.5)',
             borderColor: 'rgb(255, 99, 132)',
             fill: false,
+            pointRadius: 0,
             data: [],
           }, ],
         },
@@ -205,6 +218,7 @@
             backgroundColor: 'rgba(255, 99, 132, 0.5)',
             borderColor: 'rgb(255, 99, 132)',
             fill: false,
+            pointRadius: 0,
             data: [],
           }, ],
         },
@@ -217,6 +231,7 @@
             backgroundColor: 'rgba(255, 99, 132, 0.5)',
             borderColor: 'rgb(255, 99, 132)',
             fill: false,
+            pointRadius: 0,
             data: [],
           }, ],
         },
@@ -322,12 +337,26 @@
     });
 
     $(document).ready(function () {
-      $('#example1').progress();
+      $(".ui.button").on('click', function () {
+        console.log(+$(this).val());
+        config.options.scales.xAxes[0].realtime.duration = +$(this).val();
+        console.log(config);
+
+        window.spsChart.update({
+          preservation: true,
+        });
+        window.totalviableChart.update({
+          preservation: true,
+        });
+        window.totalscannedChart.update({
+          preservation: true,
+        });
+      });
     });
 
     spsRef
       .orderByChild('time')
-      .limitToLast(62)
+      .limitToLast(362)
       .on('child_added', (snapshot) => {
         stats.sps = snapshot.val().value;
         window.spsChart.config.data.datasets[0].data.push({
@@ -346,7 +375,7 @@
       });
     totalviableRef
       .orderByChild('time')
-      .limitToLast(62)
+      .limitToLast(362)
       .on('child_added', (snapshot) => {
         stats.viable = snapshot.val().value;
         window.totalviableChart.config.data.datasets[0].data.push({
@@ -359,7 +388,7 @@
       });
     totalscannedRef
       .orderByChild('time')
-      .limitToLast(62)
+      .limitToLast(362)
       .on('child_added', (snapshot) => {
         stats.scanned = snapshot.val().value;
         window.totalscannedChart.config.data.datasets[0].data.push({
