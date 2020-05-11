@@ -24,6 +24,48 @@
   <div class="chart-container">
     <canvas id="totalscannedChart"></canvas>
   </div>
+  <div class="ui five small statistics">
+    <div class="statistic">
+      <div id="currsps" class="value">
+        <div class="ui active centered inline loader"></div>
+      </div>
+      <div class="label">
+        Current SPS
+      </div>
+    </div>
+    <div class="statistic">
+      <div id="peaksps" class="value">
+        <div class="ui active centered inline loader"></div>
+      </div>
+      <div class="label">
+        Peak SPS
+      </div>
+    </div>
+    <div class="statistic">
+      <div id="tvstat" class="value">
+        <div class="ui active centered inline loader"></div>
+      </div>
+      <div class="label">
+        Total viable
+      </div>
+    </div>
+    <div class="statistic">
+      <div id="tsstat" class="value">
+        <div class="ui active centered inline loader"></div>
+      </div>
+      <div class="label">
+        Total Scanned
+      </div>
+    </div>
+    <div class="statistic">
+      <div id="seedinlastmin" class="value">
+        <div class="ui active centered inline loader"></div>
+      </div>
+      <div class="label">
+        Seeds scanned in last minute
+      </div>
+    </div>
+  </div>
   <table class="ui compact table">
     <thead>
       <tr>
@@ -96,16 +138,7 @@
       </tr>
     </tbody>
   </table>
-  <div class="ui one small statistics">
-    <div class="statistic">
-      <div id="peaksps" class="value">
-        0
-      </div>
-      <div class="label">
-        Peak SPS
-      </div>
-    </div>
-  </div>
+
 
   <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-app.js"></script>
 
@@ -145,7 +178,7 @@
           }, ],
           yAxes: [{
             ticks: {
-              userCallback: function (value, index, values) {
+              userCallback: function (value) {
                 value = value.toString();
                 value = value.split(/(?=(?:...)*$)/);
 
@@ -278,7 +311,14 @@
       document.getElementById('fteta').innerHTML = ftrem.d + ftrem.h + ftrem.m;
       document.getElementById('sfteta').innerHTML = sftrem.d + sftrem.h + sftrem.m;
       document.getElementById('hteta').innerHTML = htrem.d + htrem.h + htrem.m;
+
+      document.getElementById('currsps').innerHTML = val.toLocaleString();
     });
+
+    stats.rViableListener(function (val) {
+      document.getElementById('tvstat').innerHTML = val.toLocaleString();
+
+    })
 
     stats.rScannedListener(function (val) {
       $('#ttpro').progress({
@@ -307,6 +347,8 @@
       document.getElementById('ftrem').innerHTML = (50000000000000 - val).toLocaleString();
       document.getElementById('sftrem').innerHTML = (75000000000000 - val).toLocaleString();
       document.getElementById('htrem').innerHTML = (100000000000000 - val).toLocaleString();
+
+      document.getElementById('tsstat').innerHTML = val.toLocaleString();
     });
 
     database
@@ -361,6 +403,9 @@
       .collection('totalscanned')
       .orderBy('time')
       .onSnapshot(function (querySnapshot) {
+        if (stats.scanned != 0) {
+          document.getElementById('seedinlastmin').innerHTML = (querySnapshot.docChanges()[(querySnapshot.docChanges().length -1)].doc.data().value - stats.scanned).toLocaleString();
+        }
         stats.scanned = querySnapshot.docChanges()[querySnapshot.docChanges().length - 1].doc.data().value;
 
         const chartData = querySnapshot.docChanges().map(change => {
