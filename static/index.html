@@ -110,6 +110,8 @@
 
     <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-analytics.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-performance.js"></script>
+
     <script>
       /* global firebase Chart */
 
@@ -126,6 +128,7 @@
 
       firebase.initializeApp(firebaseConfig);
       firebase.analytics();
+      firebase.performance();
 
       var database = firebase.firestore();
 
