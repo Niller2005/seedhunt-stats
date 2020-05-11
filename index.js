@@ -7,32 +7,26 @@ firebase.initializeApp({
   credential: firebase.credential.cert(serviceAccount),
   databaseURL: 'https://seedhunt-stats.firebaseio.com',
 });
-const db = firebase.database();
-const spsRef = db.ref('sps');
-const totalviableRef = db.ref('totalviable');
-const totalscannedRef = db.ref('totalscanned');
+const db = firebase.firestore();
 
 setInterval(() => {
-  const now = Date.now();
-  const newSpsRef = spsRef.push();
+  const now = new Date(Date.now());
   axios.get('https://seedhunt.net/statistics/api/sps').then((res) => {
-    newSpsRef.set({
+    db.collection('sps').add({
       value: res.data.seeds_per_secound,
       time: now,
     });
   });
 
-  const newTotalviablRef = totalviableRef.push();
   axios.get('https://seedhunt.net/statistics/api/totalviable').then((res) => {
-    newTotalviablRef.set({
+    db.collection('totalviable').add({
       value: res.data.total_viable_seeds,
       time: now,
     });
   });
 
-  const newTotalscannedRef = totalscannedRef.push();
   axios.get('https://seedhunt.net/statistics/api/totalscanned').then((res) => {
-    newTotalscannedRef.set({
+    db.collection('totalscanned').add({
       value: res.data.total_scanned_seeds,
       time: now,
     });
