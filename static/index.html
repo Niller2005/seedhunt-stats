@@ -1,380 +1,381 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://cdn.jsdelivr.net/npm/moment@2.24.0/min/moment.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-streaming@1.8.0"></script>
-    <title>Seedhunt Stats</title>
-    <script src="js/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="css/semantic.min.css" />
-    <script src="js/semantic.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/style.css" />
-  </head>
 
-  <body>
-    <div class="spsChart-container">
-      <canvas id="spsChart"></canvas>
-    </div>
-    <div class="chart-container">
-      <canvas id="totalviableChart"></canvas>
-    </div>
-    <div class="chart-container">
-      <canvas id="totalscannedChart"></canvas>
-    </div>
-    <table class="ui compact table">
-      <thead>
-        <tr>
-          <th class="three wide">Goal</th>
-          <th class="three wide">Remaining</th>
-          <th class="three wide">ETA</th>
-          <th>Progress</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>10,000,000,000,000</td>
-          <td id="ttrem">10000000000000</td>
-          <td id="tteta">&infin;</td>
-          <td>
-            <div class="ui indicating progress" data-percent="0" id="ttpro">
-              <div class="bar">
-                <div class="progress"></div>
-              </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.jsdelivr.net/npm/moment@2.24.0/min/moment.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-streaming@1.8.0"></script>
+  <title>Seedhunt Stats</title>
+  <script src="js/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="css/semantic.min.css" />
+  <script src="js/semantic.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="css/style.css" />
+</head>
+
+<body>
+  <div class="spsChart-container">
+    <canvas id="spsChart"></canvas>
+  </div>
+  <div class="chart-container">
+    <canvas id="totalviableChart"></canvas>
+  </div>
+  <div class="chart-container">
+    <canvas id="totalscannedChart"></canvas>
+  </div>
+  <table class="ui compact table">
+    <thead>
+      <tr>
+        <th class="three wide">Goal</th>
+        <th class="three wide">Remaining</th>
+        <th class="three wide">ETA</th>
+        <th>Progress</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>10,000,000,000,000</td>
+        <td id="ttrem">10000000000000</td>
+        <td id="tteta">&infin;</td>
+        <td>
+          <div class="ui indicating progress" data-percent="0" id="ttpro">
+            <div class="bar">
+              <div class="progress"></div>
             </div>
-          </td>
-        </tr>
-        <tr>
-          <td>25,000,000,000,000</td>
-          <td id="tftrem">25000000000000</td>
-          <td id="tfteta">&infin;</td>
-          <td>
-            <div class="ui indicating progress" data-percent="0" id="tftpro">
-              <div class="bar">
-                <div class="progress"></div>
-              </div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>25,000,000,000,000</td>
+        <td id="tftrem">25000000000000</td>
+        <td id="tfteta">&infin;</td>
+        <td>
+          <div class="ui indicating progress" data-percent="0" id="tftpro">
+            <div class="bar">
+              <div class="progress"></div>
             </div>
-          </td>
-        </tr>
-        <tr>
-          <td>50,000,000,000,000</td>
-          <td id="ftrem">50000000000000</td>
-          <td id="fteta">&infin;</td>
-          <td>
-            <div class="ui indicating progress" data-percent="0" id="ftpro">
-              <div class="bar">
-                <div class="progress"></div>
-              </div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>50,000,000,000,000</td>
+        <td id="ftrem">50000000000000</td>
+        <td id="fteta">&infin;</td>
+        <td>
+          <div class="ui indicating progress" data-percent="0" id="ftpro">
+            <div class="bar">
+              <div class="progress"></div>
             </div>
-          </td>
-        </tr>
-        <tr>
-          <td>75,000,000,000,000</td>
-          <td id="sftrem">75000000000000</td>
-          <td id="sfteta">&infin;</td>
-          <td>
-            <div class="ui indicating progress" data-percent="0" id="sftpro">
-              <div class="bar">
-                <div class="progress"></div>
-              </div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>75,000,000,000,000</td>
+        <td id="sftrem">75000000000000</td>
+        <td id="sfteta">&infin;</td>
+        <td>
+          <div class="ui indicating progress" data-percent="0" id="sftpro">
+            <div class="bar">
+              <div class="progress"></div>
             </div>
-          </td>
-        </tr>
-        <tr>
-          <td>100,000,000,000,000</td>
-          <td id="htrem">100000000000000</td>
-          <td id="hteta">&infin;</td>
-          <td>
-            <div class="ui indicating progress" data-percent="0" id="htpro">
-              <div class="bar">
-                <div class="progress"></div>
-              </div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>100,000,000,000,000</td>
+        <td id="htrem">100000000000000</td>
+        <td id="hteta">&infin;</td>
+        <td>
+          <div class="ui indicating progress" data-percent="0" id="htpro">
+            <div class="bar">
+              <div class="progress"></div>
             </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="ui one small statistics">
-      <div class="statistic">
-        <div id="peaksps" class="value">
-          0
-        </div>
-        <div class="label">
-          Peak SPS
-        </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="ui one small statistics">
+    <div class="statistic">
+      <div id="peaksps" class="value">
+        0
+      </div>
+      <div class="label">
+        Peak SPS
       </div>
     </div>
+  </div>
 
-    <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-app.js"></script>
 
-    <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-analytics.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-firestore.js"></script>
-    <script>
-      /* global firebase Chart */
+  <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-analytics.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-firestore.js"></script>
+  <script>
+    /* global firebase Chart */
 
-      var firebaseConfig = {
-        apiKey: 'AIzaSyAtQCYeu0458BV6lZrWYcOaAh81lzX6UQg',
-        authDomain: 'seedhunt-stats.firebaseapp.com',
-        databaseURL: 'https://seedhunt-stats.firebaseio.com',
-        projectId: 'seedhunt-stats',
-        storageBucket: 'seedhunt-stats.appspot.com',
-        messagingSenderId: '277480645347',
-        appId: '1:277480645347:web:7f046f6ad7cda1cc209bd6',
-        measurementId: 'G-396J912S0K',
-      };
+    var firebaseConfig = {
+      apiKey: 'AIzaSyAtQCYeu0458BV6lZrWYcOaAh81lzX6UQg',
+      authDomain: 'seedhunt-stats.firebaseapp.com',
+      databaseURL: 'https://seedhunt-stats.firebaseio.com',
+      projectId: 'seedhunt-stats',
+      storageBucket: 'seedhunt-stats.appspot.com',
+      messagingSenderId: '277480645347',
+      appId: '1:277480645347:web:7f046f6ad7cda1cc209bd6',
+      measurementId: 'G-396J912S0K',
+    };
 
-      firebase.initializeApp(firebaseConfig);
-      firebase.analytics();
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
 
-      var database = firebase.firestore();
+    var database = firebase.firestore();
 
-      var config = {
-        type: 'line',
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          scales: {
-            xAxes: [
-              {
-                type: 'realtime',
-                realtime: {
-                  duration: 21600000,
-                  delay: 62000,
-                },
+    var config = {
+      type: 'line',
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          xAxes: [{
+            type: 'realtime',
+            realtime: {
+              duration: 21600000,
+              delay: 62000,
+            },
+          }, ],
+          yAxes: [{
+            ticks: {
+              userCallback: function (value, index, values) {
+                value = value.toString();
+                value = value.split(/(?=(?:...)*$)/);
+
+                value = value.join(',');
+                return value;
               },
-            ],
-            yAxes: [
-              {
-                ticks: {
-                  userCallback: function (value, index, values) {
-                    value = value.toString();
-                    value = value.split(/(?=(?:...)*$)/);
+            },
+          }, ],
+        },
+        tooltips: {
+          mode: 'nearest',
+          intersect: false,
+        },
+        hover: {
+          mode: 'nearest',
+          intersect: false,
+        },
+      },
+    };
 
-                    value = value.join(',');
-                    return value;
-                  },
-                },
-              },
-            ],
-          },
-          tooltips: {
-            mode: 'nearest',
-            intersect: false,
-          },
-          hover: {
-            mode: 'nearest',
-            intersect: false,
-          },
+    window.onload = function () {
+      var spsCtx = document.getElementById('spsChart').getContext('2d');
+      var totalviableCtx = document.getElementById('totalviableChart').getContext('2d');
+      var totalscannedCtx = document.getElementById('totalscannedChart').getContext('2d');
+      window.spsChart = new Chart(spsCtx, {
+        ...config,
+        data: {
+          datasets: [{
+            label: 'Seeds per second',
+            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+            borderColor: 'rgb(255, 99, 132)',
+            fill: false,
+            pointRadius: 0,
+            data: [],
+          }, ],
         },
-      };
+      });
+      window.totalviableChart = new Chart(totalviableCtx, {
+        ...config,
+        data: {
+          datasets: [{
+            label: 'Total Viable Seeds',
+            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+            borderColor: 'rgb(255, 99, 132)',
+            fill: false,
+            pointRadius: 0,
+            data: [],
+          }, ],
+        },
+      });
+      window.totalscannedChart = new Chart(totalscannedCtx, {
+        ...config,
+        data: {
+          datasets: [{
+            label: 'Total Scanned Seeds',
+            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+            borderColor: 'rgb(255, 99, 132)',
+            fill: false,
+            pointRadius: 0,
+            data: [],
+          }, ],
+        },
+      });
+    };
 
-      window.onload = function () {
-        var spsCtx = document.getElementById('spsChart').getContext('2d');
-        var totalviableCtx = document.getElementById('totalviableChart').getContext('2d');
-        var totalscannedCtx = document.getElementById('totalscannedChart').getContext('2d');
-        window.spsChart = new Chart(spsCtx, {
-          ...config,
-          data: {
-            datasets: [
-              {
-                label: 'Seeds per second',
-                backgroundColor: 'rgba(255, 99, 132, 0.5)',
-                borderColor: 'rgb(255, 99, 132)',
-                fill: false,
-                pointRadius: 0,
-                data: [],
-              },
-            ],
-          },
-        });
-        window.totalviableChart = new Chart(totalviableCtx, {
-          ...config,
-          data: {
-            datasets: [
-              {
-                label: 'Total Viable Seeds',
-                backgroundColor: 'rgba(255, 99, 132, 0.5)',
-                borderColor: 'rgb(255, 99, 132)',
-                fill: false,
-                pointRadius: 0,
-                data: [],
-              },
-            ],
-          },
-        });
-        window.totalscannedChart = new Chart(totalscannedCtx, {
-          ...config,
-          data: {
-            datasets: [
-              {
-                label: 'Total Scanned Seeds',
-                backgroundColor: 'rgba(255, 99, 132, 0.5)',
-                borderColor: 'rgb(255, 99, 132)',
-                fill: false,
-                pointRadius: 0,
-                data: [],
-              },
-            ],
-          },
-        });
-      };
+    const stats = {
+      spsInternal: 0,
+      viableInternal: 0,
+      scannedInternal: 0,
+      spsListener: function (val) {},
+      viableListener: function (val) {},
+      scannedListener: function (val) {},
+      set sps(val) {
+        this.spsInternal = val;
+        this.spsListener(val);
+      },
+      set viable(val) {
+        this.viableInternal = val;
+        this.viableListener(val);
+      },
+      set scanned(val) {
+        this.scannedInternal = val;
+        this.scannedListener(val);
+      },
+      get sps() {
+        return this.spsInternal;
+      },
+      get viable() {
+        return this.viableInternal;
+      },
+      get scanned() {
+        return this.scannedInternal;
+      },
+      rSpsListener: function (listener) {
+        this.spsListener = listener;
+      },
+      rViableListener: function (listener) {
+        this.viableListener = listener;
+      },
+      rScannedListener: function (listener) {
+        this.scannedListener = listener;
+      },
+    };
 
-      const stats = {
-        spsInternal: 0,
-        viableInternal: 0,
-        scannedInternal: 0,
-        spsListener: function (val) {},
-        viableListener: function (val) {},
-        scannedListener: function (val) {},
-        set sps(val) {
-          this.spsInternal = val;
-          this.spsListener(val);
-        },
-        set viable(val) {
-          this.viableInternal = val;
-          this.viableListener(val);
-        },
-        set scanned(val) {
-          this.scannedInternal = val;
-          this.scannedListener(val);
-        },
-        get sps() {
-          return this.spsInternal;
-        },
-        get viable() {
-          return this.viableInternal;
-        },
-        get scanned() {
-          return this.scannedInternal;
-        },
-        rSpsListener: function (listener) {
-          this.spsListener = listener;
-        },
-        rViableListener: function (listener) {
-          this.viableListener = listener;
-        },
-        rScannedListener: function (listener) {
-          this.scannedListener = listener;
-        },
-      };
+    function eta(iSeconds) {
+      const etaRet = {};
+      const seconds = Number(iSeconds);
+      var d = Math.floor(seconds / (3600 * 24));
+      var h = Math.floor((seconds % (3600 * 24)) / 3600);
+      var m = Math.floor((seconds % 3600) / 60);
+      var s = Math.floor(seconds % 60);
 
-      function eta(iSeconds) {
-        const etaRet = {};
-        const seconds = Number(iSeconds);
-        var d = Math.floor(seconds / (3600 * 24));
-        var h = Math.floor((seconds % (3600 * 24)) / 3600);
-        var m = Math.floor((seconds % 3600) / 60);
-        var s = Math.floor(seconds % 60);
+      etaRet.d = d > 0 ? d + (d == 1 ? 'd ' : 'd ') : '';
+      etaRet.h = h > 0 ? h + (h == 1 ? 'h ' : 'h ') : '';
+      etaRet.m = m > 0 ? m + (m == 1 ? 'm ' : 'm ') : '';
+      etaRet.s = s > 0 ? s + (s == 1 ? 's ' : 's ') : '';
 
-        etaRet.d = d > 0 ? d + (d == 1 ? 'd ' : 'd ') : '';
-        etaRet.h = h > 0 ? h + (h == 1 ? 'h ' : 'h ') : '';
-        etaRet.m = m > 0 ? m + (m == 1 ? 'm ' : 'm ') : '';
-        etaRet.s = s > 0 ? s + (s == 1 ? 's ' : 's ') : '';
+      return etaRet;
+    }
 
-        return etaRet;
-      }
+    stats.rSpsListener(function (val) {
+      const ttrem = eta(Math.floor((10000000000000 - stats.scanned) / val));
+      const tftrem = eta(Math.floor((25000000000000 - stats.scanned) / val));
+      const ftrem = eta(Math.floor((50000000000000 - stats.scanned) / val));
+      const sftrem = eta(Math.floor((75000000000000 - stats.scanned) / val));
+      const htrem = eta(Math.floor((100000000000000 - stats.scanned) / val));
 
-      stats.rSpsListener(function (val) {
-        const ttrem = eta(Math.floor((10000000000000 - stats.scanned) / val));
-        const tftrem = eta(Math.floor((25000000000000 - stats.scanned) / val));
-        const ftrem = eta(Math.floor((50000000000000 - stats.scanned) / val));
-        const sftrem = eta(Math.floor((75000000000000 - stats.scanned) / val));
-        const htrem = eta(Math.floor((100000000000000 - stats.scanned) / val));
+      document.getElementById('tteta').innerHTML = ttrem.d + ttrem.h + ttrem.m;
+      document.getElementById('tfteta').innerHTML = tftrem.d + tftrem.h + tftrem.m;
+      document.getElementById('fteta').innerHTML = ftrem.d + ftrem.h + ftrem.m;
+      document.getElementById('sfteta').innerHTML = sftrem.d + sftrem.h + sftrem.m;
+      document.getElementById('hteta').innerHTML = htrem.d + htrem.h + htrem.m;
+    });
 
-        document.getElementById('tteta').innerHTML = ttrem.d + ttrem.h + ttrem.m;
-        document.getElementById('tfteta').innerHTML = tftrem.d + tftrem.h + tftrem.m;
-        document.getElementById('fteta').innerHTML = ftrem.d + ftrem.h + ftrem.m;
-        document.getElementById('sfteta').innerHTML = sftrem.d + sftrem.h + sftrem.m;
-        document.getElementById('hteta').innerHTML = htrem.d + htrem.h + htrem.m;
+    stats.rScannedListener(function (val) {
+      $('#ttpro').progress({
+        total: 10000000000000,
+        value: val,
+      });
+      $('#tftpro').progress({
+        total: 25000000000000,
+        value: val,
+      });
+      $('#ftpro').progress({
+        total: 50000000000000,
+        value: val,
+      });
+      $('#sftpro').progress({
+        total: 75000000000000,
+        value: val,
+      });
+      $('#htpro').progress({
+        total: 100000000000000,
+        value: val,
       });
 
-      stats.rScannedListener(function (val) {
-        $('#ttpro').progress({
-          total: 10000000000000,
-          value: val,
-        });
-        $('#tftpro').progress({
-          total: 25000000000000,
-          value: val,
-        });
-        $('#ftpro').progress({
-          total: 50000000000000,
-          value: val,
-        });
-        $('#sftpro').progress({
-          total: 75000000000000,
-          value: val,
-        });
-        $('#htpro').progress({
-          total: 100000000000000,
-          value: val,
-        });
+      document.getElementById('ttrem').innerHTML = (10000000000000 - val).toLocaleString();
+      document.getElementById('tftrem').innerHTML = (25000000000000 - val).toLocaleString();
+      document.getElementById('ftrem').innerHTML = (50000000000000 - val).toLocaleString();
+      document.getElementById('sftrem').innerHTML = (75000000000000 - val).toLocaleString();
+      document.getElementById('htrem').innerHTML = (100000000000000 - val).toLocaleString();
+    });
 
-        document.getElementById('ttrem').innerHTML = (10000000000000 - val).toLocaleString();
-        document.getElementById('tftrem').innerHTML = (25000000000000 - val).toLocaleString();
-        document.getElementById('ftrem').innerHTML = (50000000000000 - val).toLocaleString();
-        document.getElementById('sftrem').innerHTML = (75000000000000 - val).toLocaleString();
-        document.getElementById('htrem').innerHTML = (100000000000000 - val).toLocaleString();
+    database
+      .collection('sps')
+      .orderBy('value', 'desc')
+      .limit(1)
+      .onSnapshot(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          document.getElementById('peaksps').innerHTML = doc.data().value.toLocaleString();
+        });
       });
 
-      database
-        .collection('sps')
-        .orderBy('value', 'desc')
-        .limit(1)
-        .onSnapshot(function (querySnapshot) {
-          querySnapshot.forEach(function (doc) {
-            document.getElementById('peaksps').innerHTML = doc.data().value.toLocaleString();
-          });
-        });
+    database
+      .collection('sps')
+      .orderBy('time')
+      .onSnapshot(function (querySnapshot) {
+        stats.sps = querySnapshot.docChanges()[querySnapshot.docChanges().length - 1].doc.data().value;
 
-      database
-        .collection('sps')
-        .orderBy('time')
-        .onSnapshot(function (querySnapshot) {
-          stats.sps = querySnapshot.docChanges()[querySnapshot.docChanges().length - 1].doc.data().value;
-          querySnapshot.docChanges().forEach(function (change) {
-            window.spsChart.config.data.datasets[0].data.push({
-              x: change.doc.data().time.toDate(),
-              y: change.doc.data().value,
-            });
-          });
-          window.spsChart.update({
-            preservation: true,
-          });
-        });
+        const chartData = querySnapshot.docChanges().map(change => {
+          return {
+            x: change.doc.data().time.toDate(),
+            y: change.doc.data().value
+          }
+        })
+        window.spsChart.config.data.datasets[0].data.push(...chartData)
 
-      database
-        .collection('totalviable')
-        .orderBy('time')
-        .onSnapshot(function (querySnapshot) {
-          stats.viable = querySnapshot.docChanges()[querySnapshot.docChanges().length - 1].doc.data().value;
-          querySnapshot.docChanges().forEach(function (change) {
-            window.totalviableChart.config.data.datasets[0].data.push({
-              x: change.doc.data().time.toDate(),
-              y: change.doc.data().value,
-            });
-          });
-          window.totalviableChart.update({
-            preservation: true,
-          });
+        window.spsChart.update({
+          preservation: true,
         });
+      });
 
-      database
-        .collection('totalscanned')
-        .orderBy('time')
-        .onSnapshot(function (querySnapshot) {
-          stats.scanned = querySnapshot.docChanges()[querySnapshot.docChanges().length - 1].doc.data().value;
-          querySnapshot.docChanges().forEach(function (change) {
-            window.totalscannedChart.config.data.datasets[0].data.push({
-              x: change.doc.data().time.toDate(),
-              y: change.doc.data().value,
-            });
-          });
-          window.totalscannedChart.update({
-            preservation: true,
-          });
+    database
+      .collection('totalviable')
+      .orderBy('time')
+      .onSnapshot(function (querySnapshot) {
+        stats.viable = querySnapshot.docChanges()[querySnapshot.docChanges().length - 1].doc.data().value;
+
+        const chartData = querySnapshot.docChanges().map(change => {
+          return {
+            x: change.doc.data().time.toDate(),
+            y: change.doc.data().value
+          }
+        })
+        window.totalviableChart.config.data.datasets[0].data.push(...chartData)
+
+        window.totalviableChart.update({
+          preservation: true,
         });
-    </script>
-  </body>
+      });
+
+    database
+      .collection('totalscanned')
+      .orderBy('time')
+      .onSnapshot(function (querySnapshot) {
+        stats.scanned = querySnapshot.docChanges()[querySnapshot.docChanges().length - 1].doc.data().value;
+
+        const chartData = querySnapshot.docChanges().map(change => {
+          return {
+            x: change.doc.data().time.toDate(),
+            y: change.doc.data().value
+          }
+        })
+        window.totalscannedChart.config.data.datasets[0].data.push(...chartData)
+
+        window.totalscannedChart.update({
+          preservation: true,
+        });
+      });
+  </script>
+</body>
+
 </html>
