@@ -332,8 +332,8 @@
         .collection('sps')
         .orderBy('time')
         .onSnapshot(function (querySnapshot) {
+          stats.sps = querySnapshot.docChanges()[querySnapshot.docChanges().length - 1].doc.data().value;
           querySnapshot.docChanges().forEach(function (change) {
-            stats.sps = change.doc.data().value;
             window.spsChart.config.data.datasets[0].data.push({
               x: change.doc.data().time.toDate(),
               y: change.doc.data().value,
@@ -348,15 +348,15 @@
         .collection('totalviable')
         .orderBy('time')
         .onSnapshot(function (querySnapshot) {
+          stats.viable = querySnapshot.docChanges()[querySnapshot.docChanges().length - 1].doc.data().value;
           querySnapshot.docChanges().forEach(function (change) {
-            stats.viable = change.doc.data().value;
             window.totalviableChart.config.data.datasets[0].data.push({
               x: change.doc.data().time.toDate(),
               y: change.doc.data().value,
             });
-            window.totalviableChart.update({
-              preservation: true,
-            });
+          });
+          window.totalviableChart.update({
+            preservation: true,
           });
         });
 
@@ -364,15 +364,15 @@
         .collection('totalscanned')
         .orderBy('time')
         .onSnapshot(function (querySnapshot) {
+          stats.scanned = querySnapshot.docChanges()[querySnapshot.docChanges().length - 1].doc.data().value;
           querySnapshot.docChanges().forEach(function (change) {
-            stats.scanned = change.doc.data().value;
             window.totalscannedChart.config.data.datasets[0].data.push({
               x: change.doc.data().time.toDate(),
               y: change.doc.data().value,
             });
-            window.totalscannedChart.update({
-              preservation: true,
-            });
+          });
+          window.totalscannedChart.update({
+            preservation: true,
           });
         });
     </script>
