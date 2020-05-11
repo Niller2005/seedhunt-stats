@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.jsdelivr.net/npm/moment@2.24.0/min/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.7"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-streaming@1.8.0"></script>
     <title>Seedhunt Stats</title>
     <script src="js/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
@@ -165,6 +167,26 @@
           hover: {
             mode: 'nearest',
             intersect: false,
+          },
+          pan: {
+            enabled: true, // Enable panning
+            mode: 'x', // Allow panning in the x direction
+            rangeMin: {
+              x: null, // Min value of the delay option
+            },
+            rangeMax: {
+              x: null, // Max value of the delay option
+            },
+          },
+          zoom: {
+            enabled: true, // Enable zooming
+            mode: 'x', // Allow zooming in the x direction
+            rangeMin: {
+              x: null, // Min value of the duration option
+            },
+            rangeMax: {
+              x: 8.64e7, // Max value of the duration option
+            },
           },
         },
       };
