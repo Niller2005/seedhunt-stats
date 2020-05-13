@@ -389,15 +389,15 @@
         .orderBy('time', 'asc')
         .limitToLast(370)
         .onSnapshot(function (querySnapshot) {
-          const chartData = querySnapshot.docChanges().map((change) => {
-            if (change.type === 'added') {
+          const chartData = querySnapshot
+            .docChanges()
+            .filter((filter) => filter.type === 'added')
+            .map((change) => {
               return {
                 x: change.doc.data().time.toDate(),
                 y: change.doc.data().value,
               };
-            }
-          });
-          console.log(chartData);
+            });
           stats.sps = chartData[chartData.length - 1].y;
 
           window.spsChart.config.data.datasets[0].data.push(...chartData);
@@ -412,14 +412,15 @@
         .orderBy('time', 'asc')
         .limitToLast(370)
         .onSnapshot(function (querySnapshot) {
-          const chartData = querySnapshot.docChanges().map((change) => {
-            if (change.type === 'added') {
+          const chartData = querySnapshot
+            .docChanges()
+            .filter((filter) => filter.type === 'added')
+            .map((change) => {
               return {
                 x: change.doc.data().time.toDate(),
                 y: change.doc.data().value,
               };
-            }
-          });
+            });
 
           stats.viable = chartData[chartData.length - 1].y;
 
@@ -435,18 +436,19 @@
         .orderBy('time', 'asc')
         .limitToLast(370)
         .onSnapshot(function (querySnapshot) {
-          const chartData = querySnapshot.docChanges().map((change) => {
-            if (change.type === 'added') {
+          const chartData = querySnapshot
+            .docChanges()
+            .filter((filter) => filter.type === 'added')
+            .map((change) => {
               return {
                 x: change.doc.data().time.toDate(),
                 y: change.doc.data().value,
               };
-            }
-          });
+            });
 
           if (stats.scanned != 0) {
             document.getElementById('seedinlastmin').innerHTML = (
-              chartData[chartData.length - 1].doc.data().value - stats.scanned
+              chartData[chartData.length - 1].y - stats.scanned
             ).toLocaleString();
           }
           stats.scanned = chartData[chartData.length - 1].y;
