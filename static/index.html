@@ -161,6 +161,8 @@
       firebase.initializeApp(firebaseConfig);
       firebase.analytics();
 
+      firebase.firestore().enablePersistence();
+
       var database = firebase.firestore();
 
       var config = {
