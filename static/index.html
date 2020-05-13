@@ -77,7 +77,9 @@
       <tbody>
         <tr>
           <td>10,000,000,000,000</td>
-          <td id="ttrem"><div class="ui mini active inline loader"></div></td>
+          <td id="ttrem">
+            <div class="ui mini active inline loader"></div>
+          </td>
           <td id="tteta">&infin;</td>
           <td>
             <div class="ui indicating progress" data-percent="0" id="ttpro">
@@ -89,7 +91,7 @@
         </tr>
         <tr>
           <td>25,000,000,000,000</td>
-          <td id="tftrem"><div class="ui mini active inline loader"></td>
+          <td id="tftrem"><div class="ui mini active inline loader"></div></td>
           <td id="tfteta">&infin;</td>
           <td>
             <div class="ui indicating progress" data-percent="0" id="tftpro">
@@ -101,7 +103,7 @@
         </tr>
         <tr>
           <td>50,000,000,000,000</td>
-          <td id="ftrem"><div class="ui mini active inline loader"></td>
+          <td id="ftrem"><div class="ui mini active inline loader"></div></td>
           <td id="fteta">&infin;</td>
           <td>
             <div class="ui indicating progress" data-percent="0" id="ftpro">
@@ -113,7 +115,7 @@
         </tr>
         <tr>
           <td>75,000,000,000,000</td>
-          <td id="sftrem"><div class="ui mini active inline loader"></td>
+          <td id="sftrem"><div class="ui mini active inline loader"></div></td>
           <td id="sfteta">&infin;</td>
           <td>
             <div class="ui indicating progress" data-percent="0" id="sftpro">
@@ -125,7 +127,7 @@
         </tr>
         <tr>
           <td>100,000,000,000,000</td>
-          <td id="htrem"><div class="ui mini active inline loader"></td>
+          <td id="htrem"><div class="ui mini active inline loader"></div></td>
           <td id="hteta">&infin;</td>
           <td>
             <div class="ui indicating progress" data-percent="0" id="htpro">
@@ -293,7 +295,7 @@
 
       function eta(iSeconds) {
         if (iSeconds <= 0) {
-          iSeconds = 0
+          iSeconds = 0;
         }
         const etaRet = {};
         const seconds = Number(iSeconds);
@@ -385,6 +387,7 @@
       database
         .collection('sps')
         .orderBy('time')
+        .limit(370)
         .onSnapshot(function (querySnapshot) {
           stats.sps = querySnapshot
             .docChanges()
@@ -406,6 +409,7 @@
       database
         .collection('totalviable')
         .orderBy('time')
+        .limit(370)
         .onSnapshot(function (querySnapshot) {
           stats.viable = querySnapshot
             .docChanges()
@@ -427,6 +431,7 @@
       database
         .collection('totalscanned')
         .orderBy('time')
+        .limit(370)
         .onSnapshot(function (querySnapshot) {
           if (stats.scanned != 0) {
             document.getElementById('seedinlastmin').innerHTML = (
